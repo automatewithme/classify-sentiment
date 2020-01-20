@@ -1,55 +1,46 @@
-from flask import Flask, request, render_template
+import os
 import pickle
-import numpy as np
+import re
 
-app = Flask(__name__)
+from flask import Flask, request, jsonify
+
+# Unpickle the trained classifier and write preprocessor method used
+def tokenizer(text):
+    return text.split(' ')
+
+def preprocessor(text):
+    """ Return a cleaned version of text
+    """
+    # Remove HTML markup
+    text = re.sub('<[^>]*>', '', text)
+    # Save emoticons for later appending
+    emoticons = re.findall('(?::|;|=)(?:-)?(?:\)|\(|D|P)', text)
+    # Remove any non-word character and append the emoticons,
+    # removing the nose character for standarization. Convert to lower case
+    text = (re.sub('[\W]+', ' ', text.lower()) + ' ' + ' '.join(emoticons).replace('-', ''))
+
+    return text
+
+tweet_classifier = pickle.load(open('../data/logisticRegression.pkl', 'rb'))
+
+app = Flask(__name__, static_folder='static')
 
 @app.route('/')
-def home():
-	return render_template('home.html')
+def index():
+    return app.send_static_file('html/index.html')
 
-@app.route('/getdelay',methods=['POST','GET'])
-def get_delay():
-    if request.method=='POST':
-        result=request.form
-        origin = result['origin']
-        dest = result['dest']
-        unique_carrier = result['unique_carrier']
-        day_of_week = result['day_of_week']
-        dep_hour = result['dep_hour']
 
-        pkl_file = open('cat', 'rb')
-        index_dict = pickle.load(pkl_file)
-        cat_vector = np.zeros(len(index_dict))
-        
-        try:
-            cat_vector[index_dict['DAY_OF_WEEK_'+str(day_of_week)]] = 1
-        except:
-            pass
-        try:
-            cat_vector[index_dict['UNIQUE_CARRIER_'+str(unique_carrier)]] = 1
-        except:
-            pass
-        try:
-            cat_vector[index_dict['ORIGIN_'+str(origin)]] = 1
-        except:
-            pass
-        try:
-            cat_vector[index_dict['DEST_'+str(dest)]] = 1
-        except:
-            pass
-        try:
-            cat_vector[index_dict['DEP_HOUR_'+str(dep_hour)]] = 1
-        except:
-            pass
-        
-        pkl_file = open('logmodel.pkl', 'rb')
-        logmodel = pickle.load(pkl_file)
-        prediction = logmodel.predict(cat_vector)
-        
-        return render_template('result.html',prediction=prediction)
+@app.route('/classify', methods=['POST'])
+def classify():
+    text = request.form.get('text', None)
+    assert text is not None
 
-    
-if __name__ == '__main__':
-	app.debug = True
-	app.run()
+    prob_neg, prob_pos = tweet_classifier.predict_proba([text])[0]
+    s = 'Positive' if prob_pos >= prob_neg else 'Negative'
+    p = prob_pos if prob_pos >= prob_neg else prob_neg
+    return jsonify({
+        'sentiment': s,
+        'probability': p
+    })
+
+app.run()
