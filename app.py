@@ -21,7 +21,7 @@ def preprocessor(text):
 
     return text
 
-tweet_classifier = pickle.load(open('../data/logisticRegression.pkl', 'rb'))
+tweet_classifier = pickle.load(open('logisticRegression.pkl', 'rb'))
 
 app = Flask(__name__, static_folder='static')
 
@@ -43,4 +43,6 @@ def classify():
         'probability': p
     })
 
-app.run()
+if __name__ == '__main__':
+    app.debug = True
+    app.run()
