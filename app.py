@@ -4,6 +4,8 @@ import re
 
 from flask import Flask, request, jsonify
 
+app = Flask(__name__, static_folder='static')
+
 # Unpickle the trained classifier and write preprocessor method used
 def tokenizer(text):
     return text.split(' ')
@@ -20,10 +22,9 @@ def preprocessor(text):
     text = (re.sub('[\W]+', ' ', text.lower()) + ' ' + ' '.join(emoticons).replace('-', ''))
 
     return text
-
-tweet_classifier = pickle.load(open('logisticRegression.pkl', 'rb'))
-
-app = Flask(__name__, static_folder='static')
+        
+pkl_file = open('logisticRegression.pkl', 'rb')
+tweet_classifier = pickle.load(pkl_file)
 
 @app.route('/')
 def index():
