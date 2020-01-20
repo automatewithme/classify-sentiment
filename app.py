@@ -33,8 +33,6 @@ def classify():
     text = request.form.get('text', None)
     assert text is not None
 
-    pkl_file = open('logisticRegression.pkl', 'rb')
-    tweet_classifier = pickle.load(pkl_file)
 
     prob_neg, prob_pos = tweet_classifier.predict_proba([text])[0]
     s = 'Positive' if prob_pos >= prob_neg else 'Negative'
@@ -45,5 +43,7 @@ def classify():
     })
 
 if __name__ == '__main__':
+	pkl_file = open('logisticRegression.pkl', 'rb')
+    tweet_classifier = pickle.load(pkl_file)
     app.debug = True
     app.run()
