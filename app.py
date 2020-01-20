@@ -33,8 +33,6 @@ def classify():
     text = request.form.get('text', None)
     assert text is not None
 
-    preprocessor = preprocessor()
-    tokenizer = tokenizer()
     pkl_file = open('logisticRegression.pkl', 'rb')
     tweet_classifier = pickle.load(pkl_file)
 
