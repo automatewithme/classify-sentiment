@@ -1,10 +1,10 @@
+from flask import Flask, request, jsonify
 import os
 import pickle
 import re
 
-from flask import Flask, request, jsonify
+app = Flask(__name__)
 
-app = Flask(__name__, static_folder='static')
 
 # Unpickle the trained classifier and write preprocessor method used
 def tokenizer(text):
@@ -22,19 +22,19 @@ def preprocessor(text):
     text = (re.sub('[\W]+', ' ', text.lower()) + ' ' + ' '.join(emoticons).replace('-', ''))
 
     return text
-        
-pkl_file = open('logisticRegression.pkl', 'rb')
-tweet_classifier = pickle.load(pkl_file)
+
 
 @app.route('/')
-def index():
-    return app.send_static_file('html/index.html')
-
+def home():
+	return render_template('home.html')
 
 @app.route('/classify', methods=['POST'])
 def classify():
     text = request.form.get('text', None)
     assert text is not None
+
+    pkl_file = open('logisticRegression.pkl', 'rb')
+    tweet_classifier = pickle.load(pkl_file)
 
     prob_neg, prob_pos = tweet_classifier.predict_proba([text])[0]
     s = 'Positive' if prob_pos >= prob_neg else 'Negative'
