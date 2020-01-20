@@ -43,7 +43,9 @@ def classify():
     })
 
 if __name__ == '__main__':
+	preprocessor = preprocessor()
+	tokenizer = tokenizer()
 	pkl_file = open('logisticRegression.pkl', 'rb')
-    tweet_classifier = pickle.load(pkl_file)
-    app.debug = True
-    app.run()
+	tweet_classifier = pickle.load(pkl_file)
+	app.debug = True
+	app.run()
