@@ -1,54 +1,127 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Theme Made By www.w3schools.com - No Copyright -->
+  <title>Wellbro</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>Sentiment Analysis</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="static/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="static/css/sticky-footer.css" rel="stylesheet">
-
-  <!-- Include JQuery -->
-  <script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous">
-  </script>
-
-  <!-- Include custom JavaScript -->
-  <script src="static/js/app.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+  body {
+    font: 20px Montserrat, sans-serif;
+    line-height: 1.8;
+    color: #f5f6f7;
+  }
+  p {font-size: 16px;}
+  .margin {margin-bottom: 45px;}
+  .bg-1 { 
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;
+  }
+  .bg-2 { 
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;
+  }
+  .bg-3 { 
+    background-color: #ffffff; /* White */
+    color: #555555;
+  }
+  .bg-4 { 
+    background-color: #2f2f2f; /* Black Gray */
+    color: #fff;
+  }
+  .container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+  .navbar {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    letter-spacing: 5px;
+  }
+  .navbar-nav  li a:hover {
+    color: #1abc9c !important;
+  }
+  </style>
 </head>
-
 <body>
 
-  <!-- Begin page content -->
-  <main role="main" class="container">
-    <h1 class="mt-5">Sentiment Analysis with Logistic Regression</h1>
-    <h2>Try it out!</h2>
+<!-- Navbar -->
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Me</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">WHO</a></li>
+        <li><a href="#">WHAT</a></li>
+        <li><a href="#">WHERE</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    <div id=form>
-      <form class="form-inline" id="tweet_form" onsubmit="return false">
-        <label class="sr-only" for="inlineFormInput">Name</label>
-        <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="tweetText" placeholder="This is an awesome tweet!">
-        <button type="submit" class="btn btn-primary" onclick="classify()">Submit</button>
-      </form>
+<!-- First Container -->
+<div class="container-fluid bg-1 text-center">
+  <h3 class="margin">Who Am I?</h3>
+  <img src="bird.jpg" class="img-responsive img-circle margin" style="display:inline" alt="Wellbro" width="350" height="350">
+  <h3>Your personal emotional healthcare companion</h3>
+</div>
+
+<!-- Second Container -->
+<div class="container-fluid bg-2 text-center">
+  <h3 class="margin">What Am I?</h3>
+  <p>I am Wellbro, an automated emotional healthcare system, to help you living a life of wholeness, balance, and contentment.</p>
+  <div id=form>
+    <form class="form-inline" id="tweet_form" onsubmit="return false">
+      <label class="sr-only" for="inlineFormInput">Name</label>
+      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="tweetText" placeholder="How do you feel?">
+      <button type="submit" class="btn btn-primary" onclick="classify()">Submit</button>
+    </form>
     </div>
     <img src="static/img/happy.svg" id="sentimentImg" alt="Tweet sentiment">
     <p id='probText'></p>
+</div>
 
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">Sentiment Analysis with Logistic Regression</span>
-      </div>
-    </footer>
+<!-- Third Container (Grid) -->
+<div class="container-fluid bg-3 text-center">    
+  <h3 class="margin">What does it signify?</h3><br>
+  <div class="row">
+    <div class="col-sm-4">
+      <h4> Being Positive </h4>
+      <p>Love, compassion, wholeness and a better emotional health is on your way!</p>
+      <img src="birds1.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-4"> 
+      <h4> Being Balanced </h4>
+      <p>A wellbeing life of balance, contentment and wholeness.</p>
+      <img src="birds2.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-4">
+      <h4> Being Negative </h4>
+      <p>seems like you need a personal healthcare assistant.</p>
+      <img src="birds3.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+    </div>
+  </div>
+</div>
 
-  </main>
+<!-- Footer -->
+<footer class="container-fluid bg-4 text-center">
+  <p>This is an automated bot that is trained on the dataset of Sentiment Analysis to analyze emotions of user and help them find balance in their thoughts and feelings.</p> 
+</footer>
 
 </body>
 </html>
